@@ -1,0 +1,8 @@
+# Ignorar executáveis do Windows
+*.exe
+
+# Ignorar arquivos objeto do C
+*.o
+
+# Ignorar arquivos de dependência 
+*.d

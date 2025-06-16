@@ -1,69 +1,30 @@
-########################################################################
-####################### Makefile Template ##############################
-########################################################################
-
-# Compiler settings - Can be customized.
+# Define o compilador que será usado
 CC = gcc
-CXXFLAGS = -std=c11 -Wall
-LDFLAGS = 
 
-# Makefile settings - Can be customized.
-APPNAME = montador
-EXT = .c
-SRCDIR = src
-OBJDIR = obj
+# Define as flags de compilação:
+# -Wall: Mostra todos os avisos (warnings)
+# -g:    Inclui informações de depuração.
+# -std=c11: Garante que o código segue o padrão C11.
+CFLAGS = -Wall -g -std=c11
 
-############## Do not change anything from here downwards! #############
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
-DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
-# UNIX-based OS variables & settings
-RM = rm
-DELOBJ = $(OBJ)
-# Windows OS variables & settings
-DEL = del
-EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
+# Define o nome do arquivo de código-fonte
+SRCS = main.c
 
-########################################################################
-####################### Targets beginning here #########################
-########################################################################
+# Define o nome do programa executável final
+TARGET = montador
 
-all: $(APPNAME)
+# Regra padrão: é executada quando você digita apenas "make"
+# Ela diz que para criar tudo ("all"), o objetivo é criar o programa $(TARGET)
+all: $(TARGET)
 
-# Builds the app
-$(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+# Regra principal para criar o programa executável
+# Diz que o "TARGET" depende dos arquivos em "SRCS"
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
 
-# Creates the dependecy rules
-%.d: $(SRCDIR)/%$(EXT)
-	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
-
-# Includes all .h files
--include $(DEP)
-
-# Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
-	$(CC) $(CXXFLAGS) -o $@ -c $<
-
-################### Cleaning rules for Unix-based OS ###################
-# Cleans complete project
+# Regra "clean": para limpar os arquivos gerados pela compilação
+# .PHONY evita que o make confunda o "clean" com um arquivo de mesmo nome
 .PHONY: clean
 clean:
-	$(RM) $(DELOBJ) $(DEP) $(APPNAME)
-
-# Cleans only all files with the extension .d
-.PHONY: cleandep
-cleandep:
-	$(RM) $(DEP)
-
-#################### Cleaning rules for Windows OS #####################
-# Cleans complete project
-.PHONY: cleanw
-cleanw:
-	$(DEL) $(WDELOBJ) $(DEP) $(APPNAME)$(EXE)
-
-# Cleans only all files with the extension .d
-.PHONY: cleandepw
-cleandepw:
-	$(DEL) $(DEP)
+	-del /f $(TARGET).exe
+	-rm -f $(TARGET)
