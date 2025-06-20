@@ -1,4 +1,5 @@
 Mini Montador RISC-V em C
+
   Este é um projeto acadêmico que consiste em um montador simples para um subconjunto da arquitetura RISC-V de 32 bits (RV32I). 
   O programa foi desenvolvido em C e é capaz de converter um arquivo de texto contendo instruções assembly RISC-V para seu respectivo código de máquina em formato binário de 32 bits.
 
